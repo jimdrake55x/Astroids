@@ -43,6 +43,12 @@
         const SOUND_ON = false;
         const SHOW_BOUNDING = false; // show or hide collision bounding
         const SHOW_CENTRE_DOT = false; // show or hide ship's centre dot
+
+        //Neural Network Params
+        const NUM_INPUTS = 2;
+        const NUM_HIDDEN = 5;
+        const NUM_OUTPUTS = 1;
+        const NUM_SAMPLES = 10000;
         
 
         /** @type {HTMLCanvasElement} */
@@ -67,27 +73,34 @@
         if(AUTOMATION_ON)
         {
             // TODO Nueral Network
-            let m0 = new Matrix(2,3,[
-                [2,1,-1],
-                [4,3,0]
-            ]);
-            let m1 = new Matrix(2,3,[
-                [4,1,1],
-                [4,4,0]
-            ]);
-            let m2 = new Matrix(2,2,[
-                [2,1],
-                [4,6]
-            ]);
-            let arr = [1,2,4];
-            //console.log(arr);
-            //console.table(Matrix.convertFromArray(arr).data);
-            console.table(m1.data);
-            console.table(Matrix.transpose(m1).data);
-            // console.table(m0.data);
-            // console.table(m1.data);
-            // console.table(Matrix.dot(m2,m1).data);
-            // console.table(m0.data);
+            var nn;
+            nn = new NeuralNetwork(NUM_INPUTS,NUM_HIDDEN,NUM_OUTPUTS);
+            
+            // Train the network
+            for(let i = 0; i < NUM_SAMPLES; i++){
+                //TEST XOR Gate logic
+                // 0 0 = 0
+                // 0 1 = 1
+                // 1 0 = 1
+                // 1 1 = 0
+
+                let input0 = Math.round(Math.random()); // Should produce 0 or 1
+                let input1 = Math.round(Math.random()); // Should produce 0 or 1
+                
+                let output = input0 == input1 ? 0 : 1;
+
+                nn.train([input0,input1],[output]);
+            }
+
+
+            //Test output
+            console.log("0,0 = " + nn.feedForward([0,0]).data);
+            console.log("0,1 = " + nn.feedForward([0,1]).data);
+            console.log("1,0 = " + nn.feedForward([1,0]).data);
+            console.log("1,1 = " + nn.feedForward([1,1]).data);
+
+            // console.table(nn.weights0.data);
+            // console.table(nn.weights1.data);
         }
 
         // set up event handlers
