@@ -1,5 +1,8 @@
 "use strict";
 
+const LOG_ON = true; //Show error logging
+const LOG_FREQ = 20000; //How often to show error logs (in iterations);
+
 /*******************
  * MATRIX FUNCTIONS
  ********************/
@@ -16,11 +19,22 @@ class NeuralNetwork{
         this._bias0 = new Matrix(1, this._numHidden);
         this._bias1 = new Matrix(1, this._numOutputs);
 
+        //Error logging
+        this._logCount = LOG_FREQ;
+
         //Randomize the initial weights
         this._bias0.randomWeights();
         this._bias1.randomWeights();
         this._weights0.randomWeights();
         this._weights1.randomWeights();
+    }
+
+    get logCount(){
+        return this._logCount;
+    }
+
+    set logCount(count){
+        this._logCount = count;
     }
 
     get weights0(){
@@ -99,6 +113,17 @@ class NeuralNetwork{
         //calculate the output errors(target - output);
         let targets = Matrix.convertFromArray(targetArray);
         let outputErrors = Matrix.subtract(targets,outputs);
+
+        //Error logging here
+        if(LOG_ON){
+            if(this.logCount == LOG_FREQ){
+                console.log("error = " + outputErrors.data[0][0]);
+            }
+            this.logCount--;
+            if(this.logCount == 0){
+                this.logCount = LOG_FREQ;
+            }
+        }
 
         //Calcualte the deltas (errors * derivitive of the output)
         let outputDerivs = Matrix.map(outputs,x=>sigmoid(x,true));
