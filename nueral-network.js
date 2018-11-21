@@ -52,6 +52,11 @@ class Matrix{
         }
     }
 
+    //Convert array to 1 row matrix
+    static convertFromArray(arr){
+        return new Matrix(1,arr.length,[arr]);
+    }
+
     //Add two matrices
     static add(m0,m1){
         Matrix.checkDimensions(m0,m1);
@@ -59,6 +64,17 @@ class Matrix{
         for(let i = 0; i < m.rows; i++){
             for(let j = 0; j < m.columns; j++){
                 m.data[i][j] = m0.data[i][j] + m1.data[i][j];
+            }
+        }
+        return m;
+    }
+
+    //Apply a function to each cell of the given matrix
+    static map(m0, mFunction){
+        let m = new Matrix(m0.rows,m0.columns);
+        for(let i = 0; i < m.rows; i++){
+            for(let j = 0; j < m.columns;j++){
+                m.data[i][j] = mFunction(m0.data[i][j]);
             }
         }
         return m;
@@ -83,6 +99,17 @@ class Matrix{
         for(let i = 0; i < m.rows; i++){
             for(let j = 0; j < m.columns; j++){
                 m.data[i][j] = m0.data[i][j] * m1.data[i][j];
+            }
+        }
+        return m;
+    }
+
+    // find the transpose of the given matrix
+    static transpose(m0){
+        let m = new Matrix(m0.columns,m0.rows);
+        for(let i = 0; i < m0.rows; i++){
+            for(let j = 0; j < m0.columns; j++){
+                m.data[j][i] = m0.data[i][j];
             }
         }
         return m;

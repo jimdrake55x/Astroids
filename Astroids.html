@@ -79,10 +79,15 @@
                 [2,1],
                 [4,6]
             ]);
-            console.table(m0.data);
+            let arr = [1,2,4];
+            //console.log(arr);
+            //console.table(Matrix.convertFromArray(arr).data);
             console.table(m1.data);
-            console.table(Matrix.dot(m2,m1).data);
-            console.table(m0.data);
+            console.table(Matrix.transpose(m1).data);
+            // console.table(m0.data);
+            // console.table(m1.data);
+            // console.table(Matrix.dot(m2,m1).data);
+            // console.table(m0.data);
         }
 
         // set up event handlers
